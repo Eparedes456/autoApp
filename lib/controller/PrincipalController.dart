@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:pruebatecnica/database/database.dart';
 import 'package:pruebatecnica/model/AutoModel.dart';
 import 'package:pruebatecnica/service/apiServices.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PrincipalController extends GetxController {
   @override
@@ -11,7 +12,7 @@ class PrincipalController extends GetxController {
     super.onInit();
 
     Future.delayed(Duration(milliseconds: 500), () {
-      this.getAllAutos();
+      this.validar();
     });
   }
 
@@ -23,6 +24,19 @@ class PrincipalController extends GetxController {
   TextEditingController placa = TextEditingController();
   TextEditingController marca = TextEditingController();
   TextEditingController kilometraje = TextEditingController();
+
+  validar() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    var primeraVez = await preferences.getString("primera");
+    if (primeraVez == null || primeraVez == "") {
+      await preferences.setString("primera", "si");
+      await getAllAutos();
+    } else {
+      hayData = true;
+      loading = false;
+      await getAllBD();
+    }
+  }
 
   getAllAutos() async {
     listAuto = [];
@@ -148,6 +162,7 @@ class PrincipalController extends GetxController {
 
   getAllBD() async {
     listMostrar = [];
+
     listMostrar = await DBProvider.db.getAllAutos();
     update();
   }
