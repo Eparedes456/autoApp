@@ -61,9 +61,19 @@ class PrincipalPage extends StatelessWidget {
                       )
                     : _.hayData == false && _.loading == false ||
                             _.listMostrar.length == 0
-                        ? Center(
-                            child: Text('No hay datos que mostrar'),
-                          )
+                        ? Padding(
+                          padding: const EdgeInsets.only(left: 35,right: 35),
+                          child: Center(
+                              child: Text(
+                                'No hay datos que mostrar, por favor registre un nuevo vehiculo.',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.grey
+
+                                ),
+                              ),
+                            ),
+                        )
                         : ListView.builder(
                             itemCount: _.listMostrar.length,
                             itemBuilder: (context, index) {
@@ -207,7 +217,7 @@ class PrincipalPage extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            _.modalInsert();
+            _.modalInsert(context);
           },
           child: Icon(Icons.add),
         ),

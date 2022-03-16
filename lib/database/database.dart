@@ -1,5 +1,6 @@
 import 'package:path/path.dart';
 import 'package:pruebatecnica/model/AutoModel.dart';
+import 'package:pruebatecnica/model/MarcaModel.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -29,7 +30,17 @@ class DBProvider {
             
           )
           ''');
-    }, version: 5);
+
+      await db.execute('''
+          CREATE TABLE marca(
+
+            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+            Descripcion TEXT
+           
+            
+          )
+          ''');
+    }, version: 6);
   }
 
   getAllAutos() async {
@@ -46,6 +57,12 @@ class DBProvider {
   insert(AutoModel auto) async {
     final db = await database;
     var respuesta = await db?.insert("autos", auto.toJson());
+    return respuesta;
+  }
+
+  insertMarca(MarcaModel marca) async {
+    final db = await database;
+    var respuesta = await db?.insert("marca", marca.toJson());
     return respuesta;
   }
 
